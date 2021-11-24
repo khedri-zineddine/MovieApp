@@ -1,15 +1,16 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import { createStore, createLogger } from 'vuex'
+import { config } from 'vuex-module-decorators'
+import MovieModule from '@/store/modules/MovieModule'
 
-Vue.use(Vuex);
+config.rawError = true
+const debug = process.env.NODE_ENV !== 'production';
+const plugins = debug ? [createLogger({})] : []
 
-export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
+const store = createStore({
   modules: {
+    MovieModule
   },
-});
+  strict: debug,
+  plugins: plugins
+})
+export default store

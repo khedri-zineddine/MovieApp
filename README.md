@@ -1,5 +1,7 @@
 # movie-task
 
+Go to ApiServices file located at `src/core/services/` and change `TOKEN` value with your api token 
+
 ## Project setup
 ```
 npm install

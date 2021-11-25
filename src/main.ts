@@ -4,7 +4,6 @@ import router from '@/router'
 import store from '@/store'
 import ApiService from '@/core/services/ApiService'
 import '@/assets/sass/tailwind.scss'
-
 const app = createApp(App)
 app.use(store)
 app.use(router)

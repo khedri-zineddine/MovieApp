@@ -16,7 +16,14 @@
           duration-700
           backdrop-brightness-95
         "
-        :src="imgBaseURL + size + '/' + (movieData && movieData.backdrop_path)"
+        :src="
+          imgBaseURL +
+          size +
+          '/' +
+          (movieData && movieData.backdrop_path
+            ? movieData.backdrop_path
+            : movieData.poster_path)
+        "
         alt="Sunset in
     the mountains"
       />

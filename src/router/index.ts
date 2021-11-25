@@ -4,7 +4,12 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('@/views/Home.vue')
+    component: () => import('@/views/Home.vue'),
+  },
+  {
+    path: '/movies/:category',
+    name: 'movies',
+    component: () => import('@/views/Home.vue'),
   },
   {
     path: '/watchlist',
@@ -19,7 +24,7 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHashHistory('/configure-admin/'),
   routes
 })
 

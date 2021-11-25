@@ -1,31 +1,165 @@
 <template>
   <div
     class="vuexplosive-modal"
-    :class="{
-      'vuexplosive-modal-hidden': !active,
-      'vuexplosive-modal-visible': active,
-    }"
+    :class="active ? 'block' : 'hidden'"
     @keydown.esc="active = false"
     :aria-hidden="modalToggle"
     tabindex="-1"
     role="dialog"
+    v-if="movie"
   >
     <transition name="scale">
-      <div class="vuexplosive-modal-container" v-if="active">
+      <div
+        class="
+          h-auto
+          fixed
+          top-1/2
+          left-1/2
+          w-2/3
+          max-w-full
+          bg-gray-100
+          p-5
+          rounded-xl
+          transform
+          -translate-y-1/2 -translate-x-1/2
+        "
+        :style="{ boxShadow: '#6B7280 0px 0px 15px -5px', zIndex: 99999 }"
+        v-if="active"
+      >
         <div class="vuexplosive-modal-inner">
-          <div class="vuexplosive-modal-header">
-            <div class="vuexplosive-modal-title">{{ title }}</div>
-            <button
-              class="vuexplosive-modal-close"
-              @click="modalToggle"
-              v-html="closeIcon"
-              arial-label="close"
-            ></button>
+          <div class="mb-5 flex justify-between">
+            <div class="w-96">
+              <img
+                class="
+                  cursor-pointer
+                  h-96
+                  w-full
+                  drop-shadow-sm
+                  backdrop-brightness-95
+                  rounded-xl
+                "
+                :src="
+                  imgBaseURL +
+                  size +
+                  '/' +
+                  (movie.poster_path ? movie.poster_path : movie.backdrop_path)
+                "
+              />
+            </div>
+            <div class="px-4 w-full">
+              <div class="text-2xl font-bold pb-1">
+                {{ movie.title }}
+              </div>
+              <div>
+                <p class="pb-4">{{ movie.overview }}</p>
+                <table class="movie-info">
+                  <tr>
+                    <td>
+                      <span class="text-gray-900 font-semibold">Genres</span>
+                    </td>
+                    <td class="text-blue-700">
+                      <span
+                        class="pr-3"
+                        v-for="genre in movie.genres"
+                        :key="genre.id"
+                        >{{ genre.name }}</span
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="text-gray-900 font-semibold"
+                        >Release date</span
+                      >
+                    </td>
+                    <td>
+                      <span>{{ movie.release_date }}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="text-gray-900 font-semibold">Status</span>
+                    </td>
+                    <td>
+                      <span>{{ movie.status }}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="text-gray-900 font-semibold"
+                        >Popularity</span
+                      >
+                    </td>
+                    <td>
+                      <span>{{ movie.popularity }}</span>
+                    </td>
+                  </tr>
+                  <tr v-if="movie.spoken_languages">
+                    <td>
+                      <span class="text-gray-900 font-semibold"
+                        >Spoken languages</span
+                      >
+                    </td>
+                    <td>
+                      <span
+                        class="pr-3"
+                        v-for="languag in movie.spoken_languages"
+                        :key="languag.english_name"
+                        >{{ languag.english_name }}</span
+                      >
+                    </td>
+                  </tr>
+
+                  <tr v-if="movie.production_companies">
+                    <td>
+                      <span class="text-gray-900 font-semibold"
+                        >Production Companies</span
+                      >
+                    </td>
+                    <td class="text-blue-700">
+                      <span
+                        class="pr-3"
+                        v-for="company in movie.production_companies"
+                        :key="company.id"
+                        >{{ company.name }}</span
+                      >
+                    </td>
+                  </tr>
+                  <tr v-if="movie.homepage">
+                    <td>
+                      <span class="text-gray-900 font-semibold">Home page</span>
+                    </td>
+                    <td>
+                      <span
+                        ><a
+                          class="text-blue-700"
+                          target="_blank"
+                          :href="movie.homepage"
+                          >{{ movie.homepage }}</a
+                        ></span
+                      >
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div>
+              <button @click="modalToggle" arial-label="close">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
-
-          <div class="vuexplosive-modal-content" v-html="content"></div>
-
-          <div class="vuexplosive-modal-footer" v-html="footer"></div>
         </div>
       </div>
     </transition>
@@ -35,41 +169,33 @@
 
 <script>
 /* eslint-disable */
+import { image } from "@/core/config/ImageConfig";
 export default {
-  name: "VuexplosiveModal",
+  name: "MovieDetail",
   props: {
     visible: {
       default: false,
     },
-    title: {
-      default: "🔥 Boo!",
-    },
-    closeIcon: {
-      default: `<span>&#x274C;</span>`,
-    },
-    content: {
-      default: `<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet a tenetur delectus reprehenderit, omnis doloremque at earum officia unde sequi accusantium corporis praesentium deserunt laboriosam dignissimos voluptatum culpa molestiae ullam. 👻</p>`,
-    },
-    footer: {
-      default: `<button>I do nothing!</button>`,
-    },
+    movie: Object,
     closeModal: Function,
   },
   data: function () {
     return {
       active: false,
+      imgBaseURL: image.baseURL,
+      size: image.size,
     };
   },
 
   methods: {
     modalToggle() {
-      this.closeModal(false);
+      this.closeModal(!this.active);
       this.active = !this.active;
     },
   },
   watch: {
     visible(oldVal, newVal) {
-      this.active = !this.active;
+      this.active = this.visible;
     },
   },
 };
@@ -77,87 +203,13 @@ export default {
 
 
 <style scoped>
+table.movie-info td {
+  padding-bottom: 10px;
+}
 .vuexplosive-modal {
-  font-family: -apple-system, BlinkMacSystemFont, "avenir next", avenir,
-    "helvetica neue", helvetica, ubuntu, roboto, noto, "segoe ui", arial,
-    sans-serif;
   line-height: 1.5;
   color: rgba(0, 0, 0, 0.8);
   text-align: left;
-}
-
-.vuexplosive-modal-container {
-  background: #fff;
-  max-width: 95%;
-  width: 450px;
-  height: auto;
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999999;
-  padding: 15px;
-  border-radius: 5px;
-}
-
-.vuexplosive-modal-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.vuexplosive-modal-title {
-  font-size: 30px;
-  font-weight: bolder;
-}
-
-.vuexplosive-modal-close {
-  align-self: flex-start;
-  font-size: 18px;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
-
-.vuexplosive-modal-content {
-  font-size: 18px;
-  color: #333;
-}
-
-.vuexplosive-modal-bg {
-  position: fixed;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  z-index: 999;
-}
-
-.vuexplosive-modal-explosion-gif {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  min-width: 50%;
-  min-height: 50%;
-  opacity: 1;
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-}
-
-.vuexplosive-modal-footer {
-  margin-top: 20px;
-}
-
-.vuexplosive-modal-hidden {
-  display: none;
-}
-.vuexplosive-modal-visible {
-  display: block;
 }
 
 .scale-enter-active {

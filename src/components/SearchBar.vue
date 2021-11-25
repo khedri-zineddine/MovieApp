@@ -13,6 +13,7 @@
         <div class="w-full p-3">
           <div
             class="relative rounded-full border-gray-400 border-2 border-solid"
+            @click="handleSearch($event)"
           >
             <i
               class="
@@ -20,7 +21,7 @@
                 cursor-pointer
                 fa fa-search
                 text-gray-700
-                top-4
+                top-3
                 left-4
               "
             >
@@ -41,15 +42,17 @@
               type="text"
               class="
                 bg-white
-                h-12
+                h-10
                 w-full
                 px-12
                 rounded-full
                 focus:outline-none
                 hover:cursor-pointer
               "
-              name=""
+              name="search"
               placeholder="Search movie"
+              @change="onValueChange"
+              @keyup.enter="handleSearch($event)"
             />
           </div>
         </div>
@@ -58,8 +61,26 @@
   </div>
 </template>
 <script lang="ts">
-export default {
+import { defineComponent } from "@vue/runtime-core";
+
+export default defineComponent({
   name: "SearchBar",
-  setup() {},
-};
+  props: {
+    onSearch: Function,
+  },
+  data: function () {
+    return {
+      value: "",
+    };
+  },
+  methods: {
+    onValueChange(event: any) {
+      const { name, value } = event.target;
+      this.value = value;
+    },
+    handleSearch(event: any) {
+      if (this.onSearch) this.onSearch(this.value);
+    },
+  },
+});
 </script>

@@ -3,12 +3,25 @@
     <div>
       <div class="flex">
         <div
-          class="py-2 px-5 mr-2 rounded-full bg-gray-200 cursor-pointer"
+          class="
+            py-2
+            px-5
+            mr-2
+            rounded-full
+            bg-gray-200
+            cursor-pointer
+            shadow-md
+          "
           v-for="(item, index) in this.tabName"
           :key="index"
           @click="onTabChange(index)"
         >
-          <h1 class="font-bold text-xl w-max">{{ item.title }}</h1>
+          <h1
+            class="font-bold text-base w-max"
+            :class="currentTab == item ? 'text-pink-700' : ''"
+          >
+            {{ item }}
+          </h1>
         </div>
       </div>
     </div>
@@ -27,6 +40,10 @@ export default defineComponent({
     tabName: {
       default: [],
     },
+    currentTab: String,
+  },
+  mounted() {
+    console.log(this.currentTab);
   },
 });
 </script>

@@ -1,6 +1,18 @@
 <template>
-  <div class="relative mx-2 my-2">
-    <div class="max-w-xs h-96 rounded-xl overflow-hidden shadow-lg">
+  <div
+    class="relative mx-2 my-2 w-64"
+    v-if="movieData.poster_path || movieData.backdrop_path"
+  >
+    <div
+      class="
+        max-w-xs
+        h-96
+        rounded-xl
+        overflow-hidden
+        shadow-lg
+        hover:shadow-2xl
+      "
+    >
       <img
         class="
           cursor-pointer
@@ -14,23 +26,19 @@
           duration-500
           backdrop-brightness-95
         "
-        :src="imgBaseURL + size + '/' + (movieData && movieData.backdrop_path)"
+        :src="
+          imgBaseURL +
+          size +
+          '/' +
+          (movieData.poster_path
+            ? movieData.poster_path
+            : movieData.backdrop_path)
+        "
         alt="Sunset in
     the mountains"
       />
     </div>
     <div class="px-6 py-4 w-full absolute max-w-sm bottom-0">
-      <div class="flex font-bold text-xl mb-2 text-gray-100 divide-y">
-        {{ movieData.title }}
-      </div>
-      <p class="flex">
-        <span
-          v-for="genre in movieData.genre_ids"
-          :key="genre"
-          class="inline-block text-sm font-semibold text-gray-300"
-          >{{ genre }}/</span
-        >
-      </p>
       <div class="flex space-x-3">
         <button
           @click="watchMovie(this.index, this.type)"

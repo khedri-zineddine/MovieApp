@@ -71,7 +71,11 @@
     "rules": {
       "no-unused-vars": "off",
       "quotes": "off",
-      "no-extra-semi": "off"
+      "no-extra-semi": "off",
+      "semi": [
+        "error",
+        "always"
+      ]
     }
   },
   "browserslist": [

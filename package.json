@@ -69,7 +69,9 @@
       }
     },
     "rules": {
-      "no-unused-vars": "off"
+      "no-unused-vars": "off",
+      "quotes": "off",
+      "no-extra-semi": "off"
     }
   },
   "browserslist": [

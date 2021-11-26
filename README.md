@@ -1,4 +1,4 @@
-# employee-org
+# movie-app
 
 ## Project setup
 ```

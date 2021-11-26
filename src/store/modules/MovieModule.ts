@@ -3,7 +3,8 @@ import { Actions, Mutations } from '@/store/enums/MovieEnums'
 import ApiService from '@/core/services/ApiService'
 
 @Module
-class MovieModule extends VuexModule {
+export default class MovieModule extends VuexModule {
+
     movies = {} as any
     movieDetail = [] as any
     get getTotalPage(): any {
@@ -87,4 +88,3 @@ class MovieModule extends VuexModule {
 
 
 }
-export default MovieModule

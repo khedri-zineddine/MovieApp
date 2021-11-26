@@ -4,7 +4,6 @@ import ApiService from '@/core/services/ApiService'
 
 @Module
 export default class MovieModule extends VuexModule {
-
     movies = {} as any
     movieDetail = [] as any
     get getTotalPage(): any {

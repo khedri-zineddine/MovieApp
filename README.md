@@ -2,7 +2,7 @@
 
 Go to ApiServices file located at `src/core/services/` and change `TOKEN` value with your api token 
 
-# if there is an error, restart the server
+### if there is an error, restart the server
 
 
 ## Project setup
